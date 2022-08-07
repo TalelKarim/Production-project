@@ -1,0 +1,31 @@
+version : "3"
+
+services:
+
+    nginx: 
+           image: nginx:stable-alpine
+           ports: 
+               - "3000:80" 
+
+    express-app:
+      build:
+         context: . 
+         args: 
+           NODE_ENV: development
+      volumes:
+       - ./:/app 
+       - /app/node_modules
+      environment:
+       - NODE_ENV=development
+       - MONGO_USER=admin
+       - MONGO_PASSWORD=0000
+       - SESSION_SECRET=secret
+      command: npm run dev 
+
+    mongo:
+       image: mongo
+       environment:
+           - MONGO_INITDB_ROOT_USERNAME=admin
+           - MONGO_INITDB_ROOT_PASSWORD=0000
+
+           
